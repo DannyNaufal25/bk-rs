@@ -37,7 +37,7 @@
                                     <td class="align-middle text-start">
                                         {{ $janjiPeriksa->jadwalPeriksa->dokter->poli }}</td>
                                     <td class="align-middle text-start">
-                                        {{ $janjiPeriksa->jadwalPeriksa->dokter->nama }}</td>
+                                        {{ $janjiPeriksa->jadwalPeriksa->dokter->name }}</td>
                                     <td class="align-middle text-start">{{ $janjiPeriksa->jadwalPeriksa->hari }}</td>
                                     <td class="align-middle text-start">
                                         {{ \Carbon\Carbon::parse($janjiPeriksa->jadwalPeriksa->jam_mulai)->format('H.i') }}
@@ -85,7 +85,7 @@
                                                                 </li>
                                                                 <li class="list-group-item">
                                                                     <strong>Nama Dokter:</strong>
-                                                                    {{ $janjiPeriksa->jadwalPeriksa->dokter->nama }}
+                                                                    {{ $janjiPeriksa->jadwalPeriksa->dokter->name }}
                                                                 </li>
                                                                 <li class="list-group-item">
                                                                     <strong>Hari Pemeriksaan:</strong>

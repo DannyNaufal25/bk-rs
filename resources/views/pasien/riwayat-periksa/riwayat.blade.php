@@ -28,7 +28,11 @@
                                     <div class="mb-3">
                                         <label class="font-semibold text-gray-700 form-label">Tanggal Periksa</label>
                                         <div class="form-control-plaintext">
-                                            {{ \Carbon\Carbon::parse($janjiPeriksa->periksa->tgl_periksa)->translatedFormat('d F Y H.i') }}
+                                            @if ($janjiPeriksa->periksa->first())
+                                                {{ \Carbon\Carbon::parse($janjiPeriksa->periksa->first()->tgl_periksa)->translatedFormat('d F Y H.i') }}
+                                            @else
+                                                <span class="text-muted">Tanggal tidak tersedia</span>
+                                            @endif
                                         </div>
                                     </div>
                                 </div>
@@ -36,7 +40,11 @@
                                     <div class="mb-3">
                                         <label class="font-semibold text-gray-700 form-label">Catatan</label>
                                         <div class="form-control-plaintext">
-                                            {{ $janjiPeriksa->periksa->catatan ?: 'Tidak ada catatan' }}
+                                            @if ($janjiPeriksa->periksa->first())
+                                                {{ $janjiPeriksa->periksa->first()->catatan ?: 'Tidak ada catatan' }}
+                                            @else
+                                                Tidak ada catatan
+                                            @endif
                                         </div>
                                     </div>
                                 </div>
@@ -49,14 +57,13 @@
                             <h5 class="mb-0 font-semibold text-gray-800 card-title">Daftar Obat Diresepkan</h5>
                         </div>
                         <div class="card-body">
-                            @if (count($janjiPeriksa->periksa->detailPeriksas) > 0)
+                            @if ($janjiPeriksa->periksa->first() && count($janjiPeriksa->periksa->first()->detailPeriksas) > 0)
                                 <ul class="list-group list-group-flush">
-                                    @foreach ($janjiPeriksa->periksa->detailPeriksas as $detailPeriksa)
+                                    @foreach ($janjiPeriksa->periksa->first()->detailPeriksas as $detailPeriksa)
                                         <li
                                             class="px-0 list-group-item d-flex justify-content-between align-items-center border-bottom">
                                             <span>{{ $detailPeriksa->obat->nama_obat }}</span>
-                                            <span
-                                                class="badge bg-light text-dark">{{ $detailPeriksa->obat->kemasan }}</span>
+                                            <span class="badge bg-light text-dark">{{ $detailPeriksa->obat->kemasan }}</span>
                                         </li>
                                     @endforeach
                                 </ul>
@@ -71,7 +78,11 @@
                             <div class="d-flex justify-content-between align-items-center">
                                 <span class="font-semibold text-gray-800 fw-bold">Biaya Periksa</span>
                                 <span class="fw-bold fs-5 text-primary">
-                                    {{ 'Rp' . number_format($janjiPeriksa->periksa->biaya_periksa, 0, ',', '.') }}
+                                    @if ($janjiPeriksa->periksa->first())
+                                        {{ 'Rp' . number_format($janjiPeriksa->periksa->first()->biaya_periksa, 0, ',', '.') }}
+                                    @else
+                                        <span class="text-muted">Biaya tidak tersedia</span>
+                                    @endif
                                 </span>
                             </div>
                         </div>
