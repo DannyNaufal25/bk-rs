@@ -6,73 +6,101 @@
     </x-slot>
 
     <div class="py-12">
-        <div class="mx-auto space-y-6 max-w-7xl sm:px-6 lg:px-8">
-            <div class="p-4 bg-white shadow-sm sm:p-8 sm:rounded-lg">
+        <div class="mx-auto max-w-7xl sm:px-6 lg:px-8 space-y-6">
+            <div class="p-4 bg-white shadow-sm sm:rounded-lg sm:p-8">
                 <section>
                     <header class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2">
                         <h2 class="text-lg font-medium text-gray-900">
                             {{ __('Daftar Obat') }}
                         </h2>
-                        <div class="flex-col items-center justify-center text-center">
-                            <a href="{{ route('dokter.obat.create') }}" class="btn btn-primary w-full sm:w-auto bg-blue-600 hover:bg-blue-700 rounded-full">Tambah Obat</a>
 
-                            @if (session('status') === 'obat-created')
-                                <p
-                                    x-data="{ show: true }" 
-                                    x-show="show"
-                                    x-transition
-                                    x-init="setTimeout(() => show = false, 2000)"
-                                    class="text-sm text-gray-600"
-                                >
-                                    {{ __('Created.') }}
-                                </p>
-                            @endif
+                        <div class="flex flex-col sm:flex-row gap-2">
+                            <a href="{{ route('dokter.obat.create') }}"
+                                class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-full text-sm font-semibold text-center">
+                                Tambah Obat
+                            </a>
+                            <a href="{{ route('dokter.obat.trash') }}"
+                                class="px-4 py-2 bg-red-500 hover:bg-red-600 text-white rounded-full text-sm font-semibold text-center">
+                                Obat Hilang
+                            </a>
                         </div>
                     </header>
 
-                    <div class="overflow-x-auto w-full rounded mt-4">
-                        <table class="table table-hover min-w-full">
-                            <thead class="bg-gray-300">
+                    {{-- Status Notification --}}
+                    @if (session('status') === 'obat-created')
+                        <p x-data="{ show: true }" x-show="show" x-transition
+                            x-init="setTimeout(() => show = false, 2000)"
+                            class="mt-2 text-sm text-green-600">
+                            Obat berhasil ditambahkan.
+                        </p>
+                    @elseif (session('status') === 'obat-updated')
+                        <p x-data="{ show: true }" x-show="show" x-transition
+                            x-init="setTimeout(() => show = false, 2000)"
+                            class="mt-2 text-sm text-yellow-600">
+                            Obat berhasil diperbarui.
+                        </p>
+                    @elseif (session('status') === 'obat-hapus')
+                        <p x-data="{ show: true }" x-show="show" x-transition
+                            x-init="setTimeout(() => show = false, 2000)"
+                            class="mt-2 text-sm text-red-600">
+                            Obat berhasil dihapus.
+                        </p>
+                    @elseif (session('status') === 'obat-restore')
+                        <p x-data="{ show: true }" x-show="show" x-transition
+                            x-init="setTimeout(() => show = false, 2000)"
+                            class="mt-2 text-sm text-blue-600">
+                            Obat berhasil dikembalikan.
+                        </p>
+                    @endif
+
+                    {{-- Tabel Obat --}}
+                    <div class="overflow-x-auto w-full rounded mt-6">
+                        <table class="min-w-full table-auto border border-gray-200">
+                            <thead class="bg-gray-100 text-gray-700 text-sm uppercase font-semibold">
                                 <tr>
-                                    <th scope="col" class="text-center font-bold text-gray-700 whitespace-nowrap">No</th>
-                                    <th scope="col" class="text-center font-bold text-gray-700 whitespace-nowrap">Nama Obat</th>
-                                    <th scope="col" class="text-center font-bold text-gray-700 whitespace-nowrap">Kemasan</th>
-                                    <th scope="col" class="text-center font-bold text-gray-700 whitespace-nowrap">Harga</th>
-                                    <th scope="col" class="text-center font-bold text-gray-700 whitespace-nowrap">Aksi</th>
+                                    <th class="text-center px-4 py-2">No</th>
+                                    <th class="text-center px-4 py-2">Nama Obat</th>
+                                    <th class="text-center px-4 py-2">Kemasan</th>
+                                    <th class="text-center px-4 py-2">Harga</th>
+                                    <th class="text-center px-4 py-2">Aksi</th>
                                 </tr>
                             </thead>
-                            <tbody>
-                                @foreach ($obats as $obat)
-                                    <tr class="align-middle hover:bg-blue-50 transition border-b border-blue-100">
-                                        <th scope="row" class="text-center text-gray-700 whitespace-nowrap">
-                                            {{ $loop->iteration }}
-                                        </th>
-                                        <td class="text-center font-semibold text-black whitespace-nowrap">
-                                            {{ $obat->nama_obat }}
-                                        </td>
-                                        <td class="text-center whitespace-nowrap">
-                                            {{ $obat->kemasan }}
-                                        </td>
-                                        <td class="text-center whitespace-nowrap">
+                            <tbody class="text-gray-800">
+                                @forelse ($obats as $obat)
+                                    <tr class="border-t hover:bg-blue-50 transition">
+                                        <td class="text-center px-4 py-2">{{ $loop->iteration }}</td>
+                                        <td class="text-center px-4 py-2 font-semibold">{{ $obat->nama_obat }}</td>
+                                        <td class="text-center px-4 py-2">{{ $obat->kemasan }}</td>
+                                        <td class="text-center px-4 py-2">
                                             {{ 'Rp' . number_format($obat->harga, 0, ',', '.') }}
                                         </td>
-                                        <td class="text-center whitespace-nowrap">
-                                            {{-- Button Edit --}}
-                                            <a href="{{ route('dokter.obat.edit', $obat->id) }}" class="btn btn-secondary btn-sm rounded-pill px-4 py-1 shadow-sm transition-all duration-150 hover:scale-105 bg-yellow-400 rounded-full">
+                                        <td class="text-center px-4 py-2 space-x-2">
+                                            {{-- Edit --}}
+                                            <a href="{{ route('dokter.obat.edit', $obat->id) }}"
+                                                class="inline-block bg-yellow-400 hover:bg-yellow-500 text-white px-4 py-1 rounded-full text-sm">
                                                 Edit
                                             </a>
 
-                                            {{-- Button Delete --}}
-                                            <form action="{{ route('dokter.obat.destroy', $obat->id) }}" method="POST" class="d-inline inline-block">
+                                            {{-- Soft Delete --}}
+                                            <form action="{{ route('dokter.obat.destroy', $obat->id) }}" method="POST"
+                                                class="inline-block"
+                                                onsubmit="return confirm('Yakin ingin menghapus obat ini?')">
                                                 @csrf
                                                 @method('DELETE')
-                                                <button type="submit" class="btn btn-danger btn-sm rounded-pill px-4 py-1 shadow-sm transition-all duration-150 hover:scale-105 bg-red-500 rounded-full">
-                                                    Delete
+                                                <button type="submit"
+                                                    class="bg-red-500 hover:bg-red-600 text-white px-4 py-1 rounded-full text-sm">
+                                                    Hapus
                                                 </button>
                                             </form>
                                         </td>
                                     </tr>
-                                @endforeach
+                                @empty
+                                    <tr>
+                                        <td colspan="5" class="text-center py-4 text-gray-500">
+                                            Tidak ada data obat.
+                                        </td>
+                                    </tr>
+                                @endforelse
                             </tbody>
                         </table>
                     </div>
