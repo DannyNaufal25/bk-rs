@@ -3,12 +3,15 @@
 namespace App\Http\Controllers\pasien;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
 use App\Models\JanjiPeriksa;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+
 
 class RiwayatPeriksaController extends Controller
 {
+		// Function() lain ....
+		// Taro dalam kelas RiwayatPeriksaController
     public function index()
     {
         $no_rm = Auth::user()->no_rm;
@@ -20,27 +23,22 @@ class RiwayatPeriksaController extends Controller
         ]);
     }
 
+    public function detail($id)
+    {
+        $janjiPeriksa = JanjiPeriksa::with(['jadwalPeriksa.dokter'])->findOrFail($id);
+
+        return view('pasien.riwayat-periksa.detail')->with([
+            'janjiPeriksa' => $janjiPeriksa,
+        ]);
+    }
+
     public function riwayat($id)
     {
-        $janjiPeriksa = JanjiPeriksa::with([
-            'jadwalPeriksa.dokter',
-            'periksa.detailPeriksas.obat' // <-- TAMBAHKAN INI
-        ])->findOrFail($id);
+        $janjiPeriksa = JanjiPeriksa::with(['jadwalPeriksa.dokter'])->findOrFail($id);
         $riwayat = $janjiPeriksa->riwayatPeriksa;
 
         return view('pasien.riwayat-periksa.riwayat')->with([
             'riwayat' => $riwayat,
-            'janjiPeriksa' => $janjiPeriksa,
-        ]);
-    }
-    public function detail($id)
-    {
-        $janjiPeriksa = JanjiPeriksa::with([
-            'jadwalPeriksa.dokter',
-            'periksa.detailPeriksas.obat' // <-- TAMBAHKAN INI
-        ])->findOrFail($id);
-
-        return view('pasien.riwayat-periksa.detail', [
             'janjiPeriksa' => $janjiPeriksa,
         ]);
     }
