@@ -46,7 +46,19 @@
                 </div>
             @endif
         </div>
-
+        @if($user->role =='dokter')
+        <div>
+            <x-input-label for="poli" :value="__('Poliklinik')" />
+            <select id="poli" name="id_poli" class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-200 focus:border-indigo-500 focus:ring-indigo-500">
+                @foreach ($polis as $poli)
+                    <option value="{{ $poli->id }}" {{ old('poli', $user->id_poli) == $poli->id ? 'selected' : '' }}>
+                        {{ $poli->nama}}
+                    </option>
+                @endforeach
+            </select>
+            <x-input-error class="mt-2" :messages="$errors->get('poli')" />
+        </div>
+        @endif
         <div class="flex items-center gap-4">
             <x-primary-button>{{ __('Save') }}</x-primary-button>
 
