@@ -29,7 +29,7 @@
                                         <label class="font-semibold text-gray-700 form-label">Tanggal Periksa</label>
                                         <div class="form-control-plaintext">
                                             @if ($janjiPeriksa->periksa->first())
-                                                {{ \Carbon\Carbon::parse($janjiPeriksa->periksa->first()->tgl_periksa)->translatedFormat('d F Y H.i') }}
+                                                {{ \Carbon\Carbon::parse($janjiPeriksa->periksa->first()->tgl_periksa)->translatedFormat('d F Y H:i') }}
                                             @else
                                                 <span class="text-muted">Tanggal tidak tersedia</span>
                                             @endif
@@ -57,13 +57,12 @@
                             <h5 class="mb-0 font-semibold text-gray-800 card-title">Daftar Obat Diresepkan</h5>
                         </div>
                         <div class="card-body">
-                            @if ($janjiPeriksa->periksa->first() && count($janjiPeriksa->periksa->first()->detailPeriksas) > 0)
+                            @if ($janjiPeriksa->periksa->first() && $janjiPeriksa->periksa->first()->detailPeriksas->count() > 0)
                                 <ul class="list-group list-group-flush">
                                     @foreach ($janjiPeriksa->periksa->first()->detailPeriksas as $detailPeriksa)
-                                        <li
-                                            class="px-0 list-group-item d-flex justify-content-between align-items-center border-bottom">
-                                            <span>{{ $detailPeriksa->obat->nama_obat }}</span>
-                                            <span class="badge bg-light text-dark">{{ $detailPeriksa->obat->kemasan }}</span>
+                                        <li class="px-0 list-group-item d-flex justify-content-between align-items-center border-bottom">
+                                            <span>{{ $detailPeriksa->obat->nama_obat ?? '-' }}</span>
+                                            <span class="badge bg-light text-dark">{{ $detailPeriksa->obat->kemasan ?? '-' }}</span>
                                         </li>
                                     @endforeach
                                 </ul>
