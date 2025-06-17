@@ -118,7 +118,7 @@
                 <x-responsive-nav-link :href="route('pasien.janjiperiksa.index')" :active="request()->routeIs('pasien.janjiperiksa.index')" class="text-black">
                     {{ __('Janji Periksa') }}
                 </x-responsive-nav-link>
-                <x-responsive-nav-link :href="route('pasien.janjiperiksa.index')" :active="request()->routeIs('pasien.janjiperiksa.index')" class="text-black">
+                <x-responsive-nav-link :href="route('pasien.riwayat-periksa.index')" :active="request()->routeIs('pasien.riwayat-periksa.index')" class="text-black">
                     {{ __('Riwayat Periksa') }}
                 </x-responsive-nav-link>
             @endif
