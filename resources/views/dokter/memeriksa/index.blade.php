@@ -16,6 +16,8 @@
                             <th class="text-center">Jam</th>
                             <th class="text-center">Keluhan</th>
                             <th class="text-center">No Antrian</th>
+                            <th class="text-center">Aksi</th>                            
+
                         </tr>
                     </thead>
                     <tbody>
