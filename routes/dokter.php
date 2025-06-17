@@ -10,14 +10,19 @@ Route::middleware(['auth', 'role:dokter'])->prefix('dokter')->group(function () 
         return view('dokter.dashboard');
     })->name('dokter.dashboard');
 
-    Route::prefix('obat')->group(function () {
-        Route::get('/', [ObatController::class, 'index'])->name('dokter.obat.index');
-        Route::get('/create', [ObatController::class, 'create'])->name('dokter.obat.create');
-        Route::post('/', [ObatController::class, 'store'])->name('dokter.obat.store');
-        Route::get('/{id}/edit', [ObatController::class, 'edit'])->name('dokter.obat.edit');
-        Route::patch('/{id}', [ObatController::class, 'update'])->name('dokter.obat.update');
-        Route::delete('/{id}', [ObatController::class, 'destroy'])->name('dokter.obat.destroy');
-    });
+   Route::prefix('obat')->group(function () {
+    // Obat aktif
+    Route::get('/', [ObatController::class, 'index'])->name('dokter.obat.index');
+    Route::get('/create', [ObatController::class, 'create'])->name('dokter.obat.create');
+    Route::post('/', [ObatController::class, 'store'])->name('dokter.obat.store');
+    Route::get('/{id}/edit', [ObatController::class, 'edit'])->name('dokter.obat.edit')->whereNumber('id');
+    Route::patch('/{id}', [ObatController::class, 'update'])->name('dokter.obat.update')->whereNumber('id');
+    Route::delete('/{id}', [ObatController::class, 'destroy'])->name('dokter.obat.destroy')->whereNumber('id');
+
+    // Trash & Restore
+    Route::get('/trash', [ObatController::class, 'trash'])->name('dokter.obat.trash');
+    Route::patch('/{id}/restore', [ObatController::class, 'restore'])->name('dokter.obat.restore')->whereNumber('id');
+});
 
     // Jadwal Periksa Routes
     Route::prefix('jadwal')->group(function () {
