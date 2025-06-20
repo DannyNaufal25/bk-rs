@@ -38,6 +38,8 @@ Route::middleware(['auth', 'role:dokter'])->prefix('dokter')->group(function () 
     Route::get('/memeriksa', [MemeriksaController::class, 'index'])->name('dokter.memeriksa.index');
     Route::get('/memeriksa/{janji}/create', [MemeriksaController::class, 'create'])->name('dokter.memeriksa.create');
     Route::post('/memeriksa', [MemeriksaController::class, 'store'])->name('dokter.memeriksa.store');
+    Route::get('memeriksa/{periksa}/edit', [MemeriksaController::class, 'edit'])->name('dokter.memeriksa.edit');
+    Route::put('memeriksa/{periksa}', [MemeriksaController::class, 'update'])->name('dokter.memeriksa.update');
 
     Route::patch('/jadwal/{jadwal}/toggle-status', [JadwalPeriksaController::class, 'toggleStatus'])->name('dokter.jadwal.toggle-status');
 });
