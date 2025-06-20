@@ -32,7 +32,11 @@
                                 <td class="text-center">{{ $janji->keluhan }}</td>
                                 <td class="text-center">{{ $janji->no_antrian }}</td>
                                 <td class="text-center">
-                                    <a href="{{ route('dokter.memeriksa.create', $janji->id) }}" class="btn btn-primary btn-sm rounded-pill">Periksa</a>
+                                    @if($janji->periksa && $janji->periksa->count() > 0)
+                                        <a href="{{ route('dokter.memeriksa.edit', $janji->periksa->first()->id) }}" class="btn btn-warning btn-sm rounded-pill">Edit</a>
+                                    @else
+                                        <a href="{{ route('dokter.memeriksa.create', $janji->id) }}" class="btn btn-primary btn-sm rounded-pill">Periksa</a>
+                                    @endif
                                 </td>
                             </tr>
                         @empty
